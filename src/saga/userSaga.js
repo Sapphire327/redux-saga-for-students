@@ -5,7 +5,13 @@ const fetchUsersFromApi = () =>
     fetch('https://jsonplaceholder.typicode.com/users?_limit=10');
 
 function* fetchUsersWorker() {
-    
+    const data = yield call(fetchUsersFromApi);
+    const users = yield call(()=>(
+        new Promise((resolve)=>{
+            resolve(data.json());
+        })
+    ))
+    yield put(setUsers(users));
 }
 
 export function* fetchUsersWatcher() {
